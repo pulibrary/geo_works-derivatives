@@ -4,8 +4,6 @@ require 'fileutils'
 
 RSpec.describe GeoWorks::Derivatives::Runners::RasterDerivatives do
   describe "#create" do
-    let(:display_raster_uri) { test_derivative_url('display_raster', 'tif') }
-    let(:thumbnail_uri) { test_derivative_url('thumbnail', 'png') }
     let(:outputs) do
       [
         {
@@ -32,14 +30,18 @@ RSpec.describe GeoWorks::Derivatives::Runners::RasterDerivatives do
     end
 
     after do
-      # Cleanup generated derivatives
-      FileUtils.rm(display_raster_uri.path)
-      FileUtils.rm(thumbnail_uri.path)
+      # Cleanup generated derivatives, unless KEEP env variable is set
+      unless ENV['KEEP']
+        FileUtils.rm(display_raster_uri.path)
+        FileUtils.rm(thumbnail_uri.path)
+      end
     end
 
     context "with a geotiff" do
       let(:input_file_path) { Pathname.new(test_data_fixture_path('files/raster/geotiff.tif')) }
       let(:input_mime_type) { 'image/tiff; gdal-format=GTiff' }
+      let(:display_raster_uri) { test_derivative_url('geotiff_display_raster', 'tif') }
+      let(:thumbnail_uri) { test_derivative_url('geotiff_thumbnail', 'png') }
 
       it_behaves_like "a set of raster derivatives"
     end
@@ -47,6 +49,8 @@ RSpec.describe GeoWorks::Derivatives::Runners::RasterDerivatives do
     context "with an ArcGrid file" do
       let(:input_file_path) { Pathname.new(test_data_fixture_path('files/raster/arcgrid.zip')) }
       let(:input_mime_type) { 'application/octet-stream; gdal-format=AIG' }
+      let(:display_raster_uri) { test_derivative_url('arcgrid_display_raster', 'tif') }
+      let(:thumbnail_uri) { test_derivative_url('arcgrid_thumbnail', 'png') }
 
       it_behaves_like "a set of raster derivatives"
     end
@@ -54,6 +58,8 @@ RSpec.describe GeoWorks::Derivatives::Runners::RasterDerivatives do
     context "with a digital elevation model file" do
       let(:input_file_path) { Pathname.new(test_data_fixture_path('files/raster/example.dem')) }
       let(:input_mime_type) { 'text/plain; gdal-format=USGSDEM' }
+      let(:display_raster_uri) { test_derivative_url('dem_display_raster', 'tif') }
+      let(:thumbnail_uri) { test_derivative_url('dem_thumbnail', 'png') }
 
       it_behaves_like "a set of raster derivatives"
     end

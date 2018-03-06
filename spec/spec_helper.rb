@@ -3,6 +3,8 @@ ENV['RACK_ENV'] = 'test'
 ENV['RAILS_ENV'] = 'test'
 require 'simplecov'
 require 'coveralls'
+require 'fileutils'
+
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   [
     SimpleCov::Formatter::HTMLFormatter,
@@ -18,6 +20,10 @@ require "bundler/setup"
 require "geo_works/derivatives"
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
+
+# Create local tmp directory to allow for easy inspection of derivative outputs.
+tmp_directory_path = File.join(Pathname.new(Dir.pwd), "tmp")
+Dir.mkdir(tmp_directory_path) unless Dir.exist?(tmp_directory_path)
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
