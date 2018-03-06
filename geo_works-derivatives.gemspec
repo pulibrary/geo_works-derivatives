@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'hydra-derivatives'
+  spec.add_dependency 'mime-types'
   spec.add_dependency 'simpler-tiles'
 
   spec.add_development_dependency 'bixby'
@@ -38,4 +39,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'byebug'
 end

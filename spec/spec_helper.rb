@@ -1,6 +1,23 @@
 # frozen_string_literal: true
+ENV['RACK_ENV'] = 'test'
+ENV['RAILS_ENV'] = 'test'
+require 'simplecov'
+require 'coveralls'
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+  [
+    SimpleCov::Formatter::HTMLFormatter,
+    Coveralls::SimpleCov::Formatter
+  ]
+)
+SimpleCov.start do
+  add_filter 'spec'
+  add_filter 'lib/geo_works/derivatives/config'
+end
+
 require "bundler/setup"
 require "geo_works/derivatives"
+
+Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
