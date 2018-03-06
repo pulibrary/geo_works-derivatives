@@ -1,7 +1,6 @@
 # GeoWorks::Derivatives
 
 [![Build Status](https://img.shields.io/travis/eliotjordan/geo_works-derivatives/master.svg)](https://travis-ci.org/eliotjordan/geo_works-derivatives)
-[![Coverage Status](https://img.shields.io/coveralls/eliotjordan/geo_works-derivatives/master.svg)](https://coveralls.io/github/eliotjordan/geo_works-derivatives?branch=master)
 
 Hydra::Derivatives compatible processors for Geospatial derivative generation.
 
