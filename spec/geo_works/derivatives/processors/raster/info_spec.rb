@@ -23,6 +23,12 @@ RSpec.describe GeoWorks::Derivatives::Processors::Raster::Info do
       allow(processor).to receive(:doc).and_return(info_doc)
     end
 
+    describe '#driver' do
+      it 'returns the gdal driver' do
+        expect(processor.driver).to eq('USGSDEM/USGS')
+      end
+    end
+
     describe '#min_max' do
       it 'returns with min and max values' do
         expect(processor.min_max).to eq('354.000 900.000')

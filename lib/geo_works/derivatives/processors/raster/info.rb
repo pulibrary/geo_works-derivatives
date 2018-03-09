@@ -11,6 +11,12 @@ module GeoWorks
             @doc = gdalinfo(path)
           end
 
+          # Returns the gdal driver name
+          # @return [String] driver name
+          def driver
+            @driver = driver_name
+          end
+
           # Returns the min and max values for a raster.
           # @return [String] computed min and max values
           def min_max
@@ -24,6 +30,14 @@ module GeoWorks
           end
 
           private
+
+            # Given an output string from the gdalinfo command, returns
+            # the gdal driver used to read dataset.
+            # @return [String] gdal driver name
+            def driver_name
+              match = /(?<=Driver:\s).*?(?=\s)/.match(doc)
+              match ? match[0] : ''
+            end
 
             # Runs the gdalinfo command and returns the result as a string.
             # @param path [String] path to raster file

@@ -31,7 +31,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::Vector::Info do
     end
 
     describe '#driver' do
-      it 'returns with min and max values' do
+      it 'returns with the ogr driver' do
         expect(processor.driver).to eq('ESRI Shapefile')
       end
     end
