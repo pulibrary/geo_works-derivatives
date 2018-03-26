@@ -1,4 +1,4 @@
-2# frozen_string_literal: true
+# frozen_string_literal: true
 module GeoWorks
   module Derivatives
     VERSION = "0.2.0"
