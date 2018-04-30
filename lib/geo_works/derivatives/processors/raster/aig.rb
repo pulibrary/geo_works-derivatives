@@ -22,7 +22,7 @@ module GeoWorks
           # Set of commands to run to reproject the AIG.
           # @return [Array] set of command name symbols
           def self.reproject_queue
-            [:warp, :translate]
+            [:warp, :translate, :compress]
           end
 
           # Executes a gdal_translate command to translate a raster

@@ -60,6 +60,23 @@ module GeoWorks
               convert << out_path
             end
           end
+
+          # Forces image into rgb colorspace.
+          # @param in_path [String] file input path
+          # @param out_path [String] processor output file path.
+          # @param options [Hash] creation options
+          def self.force_rgb(in_path, out_path, _options)
+            convert = MiniMagick::Tool::Convert.new(whiny: false)
+            convert << in_path
+            convert << "-colorspace"
+            convert << "sRGB"
+            convert << "-type"
+            convert << "truecolor"
+            convert << out_path
+
+            # suppress stderr b/c geotiffs return 'unknown field' warnings
+            convert.call { |_stdout, _stderr| }
+          end
         end
       end
     end

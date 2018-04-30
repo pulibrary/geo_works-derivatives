@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GeoWorks
   module Derivatives
     module Processors
@@ -13,7 +14,7 @@ module GeoWorks
           # @param out_path [String] processor output file path
           # @param options [Hash] creation options
           def self.translate(in_path, out_path, _options)
-            execute "gdal_translate -q -ot Byte -of GTiff \"#{in_path}\" #{out_path}"
+            execute "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -co COMPRESS=NONE \"#{in_path}\" #{out_path}"
           end
 
           # Executes a gdalwarp command. Used to transform a raster
@@ -22,8 +23,8 @@ module GeoWorks
           # @param out_path [String] processor output file path
           # @param options [Hash] creation options
           def self.warp(in_path, out_path, options)
-            execute "gdalwarp -q -r bilinear -t_srs #{options[:output_srid]} "\
-                    "#{in_path} #{out_path} -co 'COMPRESS=NONE'"
+            execute "gdalwarp -q -t_srs #{options[:output_srid]} "\
+                    "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=NONE"
           end
 
           # Executes a gdal_translate command. Used to compress
@@ -33,7 +34,21 @@ module GeoWorks
           # @param options [Hash] creation options
           def self.compress(in_path, out_path, options)
             execute "gdal_translate -q -ot Byte -a_srs #{options[:output_srid]} "\
-                      "#{in_path} #{out_path} -co 'COMPRESS=LZW'"
+                      "#{in_path} #{out_path} -co 'COMPRESS=JPEG'"
+          end
+
+          # Executes gdaladdo and gdal_translate commands. Used to add internal overviews
+          # and then compress a previously uncompressed raster.
+          # Output will be a Cloud Optimized GeoTIFF.
+          # @param in_path [String] file input path
+          # @param out_path [String] processor output file path
+          # @param options [Hash] creation options
+          def self.cloud_optimized_geotiff(in_path, out_path, options)
+            system("gdaladdo -q --config COMPRESS_OVERVIEW JPEG --config PHOTOMETRIC_OVERVIEW YCBCR "\
+                     "--config INTERLEAVE_OVERVIEW PIXEL -r average #{in_path} 2 4 8 16 32")
+            execute("gdal_translate -q -ot Byte -a_srs #{options[:output_srid]} "\
+                      "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG " \
+                      "-co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES")
           end
 
           # Executes a gdal_rasterize command. Used to rasterize vector

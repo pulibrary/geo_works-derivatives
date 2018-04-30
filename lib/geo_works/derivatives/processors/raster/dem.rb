@@ -13,7 +13,7 @@ module GeoWorks
           # Set of commands to run to reproject the DEM.
           # @return [Array] set of command name symbols
           def self.reproject_queue
-            [:hillshade, :warp]
+            [:hillshade, :warp, :compress]
           end
 
           # Executes a gdal hillshade command. Calculates hillshade
