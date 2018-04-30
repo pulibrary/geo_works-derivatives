@@ -21,7 +21,7 @@ module GeoWorks
           # Set of commands to run to encode the raster thumbnail.
           # @return [Array] set of command name symbols
           def self.encode_queue
-            [:translate, :convert]
+            [:translate, :convert, :trim, :center]
           end
 
           # Set of commands to run to reproject the raster.

@@ -7,7 +7,7 @@ module GeoWorks
           # Set of commands to run to encode the DEM thumbnail.
           # @return [Array] set of command name symbols
           def self.encode_queue
-            [:hillshade, :convert]
+            [:hillshade, :convert, :trim, :center]
           end
 
           # Set of commands to run to reproject the DEM.
