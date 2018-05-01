@@ -27,7 +27,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::BaseGeoProcessor do
 
   describe '#translate' do
     it 'executes a gdal_translate command' do
-      command = "gdal_translate -q -ot Byte -of GTiff \"files/geo.tif\" output/geo.png"
+      command = "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -co COMPRESS=NONE \"files/geo.tif\" output/geo.png"
       processor.class.translate(file_name, output_file, options)
       expect(processor.class).to have_received(:execute).with command
     end
@@ -35,7 +35,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::BaseGeoProcessor do
 
   describe '#warp' do
     it 'executes a reproject command' do
-      command = "gdalwarp -q -r bilinear -t_srs EPSG:4326 files/geo.tif output/geo.png -co 'COMPRESS=NONE'"
+      command = "gdalwarp -q -t_srs EPSG:4326 files/geo.tif output/geo.png -co TILED=YES -co COMPRESS=NONE"
       processor.class.warp(file_name, output_file, options)
       expect(processor.class).to have_received(:execute).with command
     end
@@ -43,7 +43,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::BaseGeoProcessor do
 
   describe '#compress' do
     it 'returns a gdal_translate command with a compress option' do
-      command = "gdal_translate -q -ot Byte -a_srs EPSG:4326 files/geo.tif output/geo.png -co 'COMPRESS=LZW'"
+      command = "gdal_translate -q -ot Byte -a_srs EPSG:4326 files/geo.tif output/geo.png -co 'COMPRESS=JPEG'"
       processor.class.compress(file_name, output_file, options)
       expect(processor.class).to have_received(:execute).with command
     end
