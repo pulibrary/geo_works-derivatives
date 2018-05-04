@@ -46,6 +46,11 @@ module GeoWorks
           def self.cloud_optimized_geotiff(in_path, out_path, options)
             system("gdaladdo -q --config COMPRESS_OVERVIEW JPEG --config PHOTOMETRIC_OVERVIEW YCBCR "\
                      "--config INTERLEAVE_OVERVIEW PIXEL -r average #{in_path} 2 4 8 16 32")
+            execute("gdal_translate -q -expand rgb -ot Byte -a_srs #{options[:output_srid]} "\
+                      "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG " \
+                      "-co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES")
+          rescue StandardError
+            # Try without expanding rgb
             execute("gdal_translate -q -ot Byte -a_srs #{options[:output_srid]} "\
                       "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG " \
                       "-co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES")

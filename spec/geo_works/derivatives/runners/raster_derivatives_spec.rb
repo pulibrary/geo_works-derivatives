@@ -37,11 +37,20 @@ RSpec.describe GeoWorks::Derivatives::Runners::RasterDerivatives do
       end
     end
 
-    context "with a geotiff" do
-      let(:input_file_path) { Pathname.new(test_data_fixture_path('files/raster/geotiff.tif')) }
+    context "with a geotiff with a color map" do
+      let(:input_file_path) { Pathname.new(test_data_fixture_path('files/raster/geotiff-color-map.tif')) }
       let(:input_mime_type) { 'image/tiff; gdal-format=GTiff' }
-      let(:display_raster_uri) { test_derivative_url('geotiff_display_raster', 'tif') }
-      let(:thumbnail_uri) { test_derivative_url('geotiff_thumbnail', 'png') }
+      let(:display_raster_uri) { test_derivative_url('geotiff_color_map_display_raster', 'tif') }
+      let(:thumbnail_uri) { test_derivative_url('geotiff_color_map_thumbnail', 'png') }
+
+      it_behaves_like "a set of raster derivatives"
+    end
+
+    context "with a geotiff with no color map" do
+      let(:input_file_path) { Pathname.new(test_data_fixture_path('files/raster/geotiff-no-color-map.tif')) }
+      let(:input_mime_type) { 'image/tiff; gdal-format=GTiff' }
+      let(:display_raster_uri) { test_derivative_url('geotiff_no_color_map_display_raster', 'tif') }
+      let(:thumbnail_uri) { test_derivative_url('geotiff_no_color_map_thumbnail', 'png') }
 
       it_behaves_like "a set of raster derivatives"
     end

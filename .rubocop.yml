@@ -9,6 +9,7 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'lib/geo_works/derivatives/processors/gdal.rb'
     - 'lib/geo_works/derivatives/processors/image.rb'
     - 'lib/geo_works/derivatives/specs/**/*'
     - 'lib/tasks/**/*'
