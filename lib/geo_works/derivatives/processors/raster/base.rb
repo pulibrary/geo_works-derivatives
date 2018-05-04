@@ -27,7 +27,7 @@ module GeoWorks
           # Set of commands to run to reproject the raster.
           # @return [Array] set of command name symbols
           def self.reproject_queue
-            [:warp, :force_rgb, :cloud_optimized_geotiff]
+            [:warp, :cloud_optimized_geotiff]
           end
 
           def self.encode_raster(in_path, out_path, options)

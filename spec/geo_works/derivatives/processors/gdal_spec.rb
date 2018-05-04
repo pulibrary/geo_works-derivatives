@@ -43,7 +43,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::BaseGeoProcessor do
 
   describe '#compress' do
     it 'returns a gdal_translate command with a compress option' do
-      command = "gdal_translate -q -ot Byte -a_srs EPSG:4326 files/geo.tif output/geo.png -co 'COMPRESS=JPEG'"
+      command = "gdal_translate -q -ot Byte -a_srs EPSG:4326 files/geo.tif output/geo.png -co COMPRESS=JPEG -co JPEG_QUALITY=90"
       processor.class.compress(file_name, output_file, options)
       expect(processor.class).to have_received(:execute).with command
     end
