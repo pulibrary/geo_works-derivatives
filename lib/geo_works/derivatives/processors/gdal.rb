@@ -34,7 +34,7 @@ module GeoWorks
           # @param options [Hash] creation options
           def self.compress(in_path, out_path, options)
             execute "gdal_translate -q -ot Byte -a_srs #{options[:output_srid]} "\
-                      "#{in_path} #{out_path} -co 'COMPRESS=JPEG'"
+                      "#{in_path} #{out_path} -co COMPRESS=JPEG -co JPEG_QUALITY=90"
           end
 
           # Executes gdaladdo and gdal_translate commands. Used to add internal overviews
@@ -47,7 +47,7 @@ module GeoWorks
             system("gdaladdo -q --config COMPRESS_OVERVIEW JPEG --config PHOTOMETRIC_OVERVIEW YCBCR "\
                      "--config INTERLEAVE_OVERVIEW PIXEL -r average #{in_path} 2 4 8 16 32")
             execute("gdal_translate -q -expand rgb -ot Byte -a_srs #{options[:output_srid]} "\
-                      "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG " \
+                      "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG -co JPEG_QUALITY=90 " \
                       "-co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES")
           rescue StandardError
             # Try without expanding rgb
