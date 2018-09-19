@@ -14,7 +14,7 @@ module GeoWorks
           # @param out_path [String] processor output file path
           # @param options [Hash] creation options
           def self.translate(in_path, out_path, _options)
-            execute "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -co COMPRESS=NONE \"#{in_path}\" #{out_path}"
+            execute "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -co COMPRESS=DEFLATE \"#{in_path}\" #{out_path}"
           end
 
           # Executes a gdalwarp command. Used to transform a raster
@@ -43,17 +43,14 @@ module GeoWorks
           # @param in_path [String] file input path
           # @param out_path [String] processor output file path
           # @param options [Hash] creation options
-          def self.cloud_optimized_geotiff(in_path, out_path, options)
-            system("gdaladdo -q --config COMPRESS_OVERVIEW JPEG --config PHOTOMETRIC_OVERVIEW YCBCR "\
-                     "--config INTERLEAVE_OVERVIEW PIXEL -r average #{in_path} 2 4 8 16 32")
-            execute("gdal_translate -q -expand rgb -ot Byte -a_srs #{options[:output_srid]} "\
-                      "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG -co JPEG_QUALITY=90 " \
-                      "-co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES")
+          def self.cloud_optimized_geotiff(in_path, out_path, _options)
+            system("gdaladdo -q -r average #{in_path} 2 4 8 16 32")
+            execute("gdal_translate -q -expand rgb #{in_path} #{out_path} -co TILED=YES "\
+                      "-co COMPRESS=JPEG -co COPY_SRC_OVERVIEWS=YES")
           rescue StandardError
             # Try without expanding rgb
-            execute("gdal_translate -q -ot Byte -a_srs #{options[:output_srid]} "\
-                      "#{in_path} #{out_path} -co TILED=YES -co COMPRESS=JPEG " \
-                      "-co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES")
+            execute("gdal_translate -q #{in_path} #{out_path} -co TILED=YES "\
+                      "-co COMPRESS=JPEG -co COPY_SRC_OVERVIEWS=YES")
           end
 
           # Executes a gdal_rasterize command. Used to rasterize vector
