@@ -14,6 +14,9 @@ module GeoWorks
           # @param out_path [String] processor output file path
           # @param options [Hash] creation options
           def self.translate(in_path, out_path, _options)
+            execute "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -expand rgb -co COMPRESS=DEFLATE \"#{in_path}\" #{out_path}"
+          rescue StandardError
+            # Try without expanding rgb
             execute "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -co COMPRESS=DEFLATE \"#{in_path}\" #{out_path}"
           end
 

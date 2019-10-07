@@ -27,7 +27,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::BaseGeoProcessor do
 
   describe '#translate' do
     it 'executes a gdal_translate command' do
-      command = "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -co COMPRESS=DEFLATE \"files/geo.tif\" output/geo.png"
+      command = "gdal_translate -q -ot Byte -of GTiff -co TILED=YES -expand rgb -co COMPRESS=DEFLATE \"files/geo.tif\" output/geo.png"
       processor.class.translate(file_name, output_file, options)
       expect(processor.class).to have_received(:execute).with command
     end
