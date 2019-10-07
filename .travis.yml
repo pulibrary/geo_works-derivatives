@@ -1,11 +1,11 @@
 sudo: true
 language: ruby
 rvm:
-  - 2.4.3
+  - 2.4.5
 addons:
   apt:
     packages:
-    - libgdal1h
+    - libgdal1i
     - libgdal-dev
     - gdal-bin
     - libcairo2-dev
