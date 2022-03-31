@@ -40,5 +40,14 @@ RSpec.describe GeoWorks::Derivatives::Processors::Raster::Info do
         expect(processor.size).to eq('310 266')
       end
     end
+
+    describe '#bounds' do
+      it 'returns bounds hash' do
+        expect(processor.bounds).to eq(north: 42.11273,
+                                       east: 74.394897,
+                                       south: 42.088583,
+                                       west: 74.432166)
+      end
+    end
   end
 end

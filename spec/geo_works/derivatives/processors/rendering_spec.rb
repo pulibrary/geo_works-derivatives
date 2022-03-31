@@ -59,7 +59,7 @@ RSpec.describe GeoWorks::Derivatives::Processors::Rendering do
     end
 
     it 'has a WGS 84 projection' do
-      expect(map.srs).to eq('+proj=longlat +datum=WGS84 +no_defs ')
+      expect(map.srs).to eq('+proj=longlat +datum=WGS84 +no_defs')
     end
   end
 end
