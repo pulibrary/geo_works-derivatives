@@ -67,13 +67,13 @@ module GeoWorks
             # @return [Array<Float, Float>] coordinates in decimal degrees
             def extract_coordinates(gdal_string)
               # remove parens and spaces, split into array, and assign elements to variables
-              _, _, w, n = gdal_string.delete(' ').gsub(')(', ',').delete('(').delete(')').split(',')
+              _, _, lon, lat = gdal_string.delete(" ").gsub(")(", ",").delete("(").delete(")").split(",")
               # split coordinate string into degree, minute, second values
-              w = w.delete("\"W").gsub("d",",").gsub("'",",").split(",")
-              n = n.delete("\"N").gsub("d",",").gsub("'",",").split(",")
+              lon = lon.delete("\"W").gsub("d",",").gsub("'",",").split(",")
+              lat = lat.delete("\"N").gsub("d",",").gsub("'",",").split(",")
 
               # Convert to decimal degrees and return
-              [dms_to_dd(*w), dms_to_dd(*n)]
+              [dms_to_dd(*lon), dms_to_dd(*lat)]
             end
 
             # Runs the gdalinfo command and returns the result as a string.
@@ -84,7 +84,7 @@ module GeoWorks
               stdout
             end
 
-            # Given an output string from the ogrinfo command, returns
+            # Given an output string from the gdalinfo command, returns
             # the raster bounding box.
             # @return [Hash] raster bounds
             def raster_bounds
