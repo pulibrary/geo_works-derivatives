@@ -11,6 +11,12 @@ module GeoWorks
             @doc = gdalinfo(path)
           end
 
+          # Returns raster bounds
+          # @return [Hash] bounds
+          def bounds
+            @bounds = raster_bounds
+          end
+
           # Returns the gdal driver name
           # @return [String] driver name
           def driver
@@ -39,12 +45,55 @@ module GeoWorks
               match ? match[0] : ''
             end
 
+            ## Converts coordinate in degrees, minutes, seconds to decimal degrees
+            #   Example: 74° 25' 55.8" -> 74.43217
+            # @param d [String] degrees
+            # @param m [String] minutes
+            # @param s [String] seconds
+            # @return [Float] coordinate in decimal degrees
+            def dms_to_dd(d, m, s)
+              dd = d.to_f + (m.to_f / 60) + (s.to_f / 3600)
+
+              # Truncate to 6 decimal places
+              # https://observablehq.com/@mourner/latitude-and-longitude-precision
+              dd.truncate(6)
+            end
+
+            ## Extracts lon/lat values from gdal_info corner coordinates string
+            #   Example:
+            #   (  546945.000, 4662235.000) ( 74d25'55.80"W, 42d 6'45.83"N) ->
+            #   [74.432166, 42.11273]
+            # @param gdal_string [String] corner corner string from gdal_info
+            # @return [Array<Float, Float>] coordinates in decimal degrees
+            def extract_coordinates(gdal_string)
+              # remove parens and spaces, split into array, and assign elements to variables
+              _, _, w, n = gdal_string.delete(' ').gsub(')(', ',').delete('(').delete(')').split(',')
+              # split coordinate string into degree, minute, second values
+              w = w.delete("\"W").gsub("d",",").gsub("'",",").split(",")
+              n = n.delete("\"N").gsub("d",",").gsub("'",",").split(",")
+
+              # Convert to decimal degrees and return
+              [dms_to_dd(*w), dms_to_dd(*n)]
+            end
+
             # Runs the gdalinfo command and returns the result as a string.
             # @param path [String] path to raster file
             # @return [String] output of gdalinfo
             def gdalinfo(path)
               stdout, _stderr, _status = Open3.capture3("gdalinfo -mm #{path}")
               stdout
+            end
+
+            # Given an output string from the ogrinfo command, returns
+            # the raster bounding box.
+            # @return [Hash] raster bounds
+            def raster_bounds
+              ul = /(?<=Upper Left\s).*?(?=\n)/.match(doc)
+              lr = /(?<=Lower Right\s).*?(?=\n)/.match(doc)
+              w, n = extract_coordinates(ul[0])
+              e, s = extract_coordinates(lr[0])
+
+              { north: n, east: e, south: s, west: w}
             end
 
             # Given an output string from the gdalinfo command, returns
