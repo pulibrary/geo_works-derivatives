@@ -90,6 +90,7 @@ module GeoWorks
             def raster_bounds
               ul = /(?<=Upper Left\s).*?(?=\n)/.match(doc)
               lr = /(?<=Lower Right\s).*?(?=\n)/.match(doc)
+              return '' unless ul && lr
               w, n = extract_coordinates(ul[0])
               e, s = extract_coordinates(lr[0])
 
