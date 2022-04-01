@@ -4,6 +4,7 @@ ENV['RAILS_ENV'] = 'test'
 require 'simplecov'
 require 'coveralls'
 require 'fileutils'
+require 'pry-byebug'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   [
