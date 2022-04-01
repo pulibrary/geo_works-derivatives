@@ -2,10 +2,12 @@ inherit_gem:
   bixby: bixby_default.yml
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: 2.3
+  NewCops: enable
+  TargetRubyVersion: 2.7
   Exclude:
     - 'bin/*'
     - 'vendor/**/*'
+    - 'tmp/**/*'
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'

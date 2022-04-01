@@ -37,44 +37,44 @@ module GeoWorks
 
           private
 
-            # Adds a shapefile layer to a simple tiles map.
-            # @param in_path [String] file input path
-            # @param options [Hash] creation options
-            def add_shapefile_layer(in_path, map)
-              Dir.glob("#{in_path}/*.shp").each do |shp|
-                map.layer shp do |l|
-                  l.query %(select * from "#{File.basename shp, '.shp'}") do |q|
-                    q.styles GeoWorks::Derivatives::Config.rendering_config.to_h
-                  end
+          # Adds a shapefile layer to a simple tiles map.
+          # @param in_path [String] file input path
+          # @param options [Hash] creation options
+          def add_shapefile_layer(in_path, map)
+            Dir.glob("#{in_path}/*.shp").each do |shp|
+              map.layer shp do |l|
+                l.query %(select * from "#{File.basename shp, '.shp'}") do |q|
+                  q.styles GeoWorks::Derivatives::Config.rendering_config.to_h
                 end
               end
             end
+          end
 
-            # Re-orders options bounds for use with a simple tiles map.
-            # @param options [Hash] creation options
-            # @return [Array] simple tiles map bounds
-            def simple_tiles_bounds(options)
-              [options[:bounds][:east],
-               options[:bounds][:north],
-               options[:bounds][:west],
-               options[:bounds][:south]]
-            end
+          # Re-orders options bounds for use with a simple tiles map.
+          # @param options [Hash] creation options
+          # @return [Array] simple tiles map bounds
+          def simple_tiles_bounds(options)
+            [options[:bounds][:east],
+             options[:bounds][:north],
+             options[:bounds][:west],
+             options[:bounds][:south]]
+          end
 
-            # Transforms the size directive into an array.
-            # @param options [Hash] creation options
-            # @return [Array] derivative size
-            def rendering_size(options)
-              options[:output_size].split(' ').map(&:to_i)
-            end
+          # Transforms the size directive into an array.
+          # @param options [Hash] creation options
+          # @return [Array] derivative size
+          def rendering_size(options)
+            options[:output_size].split(' ').map(&:to_i)
+          end
 
-            # Assigns new values from the vector info command to the creation options hash.
-            # @param in_path [String] file input path
-            # @param options [Hash] creation options
-            def assign_rendering_options(in_path, options)
-              vector_info = GeoWorks::Derivatives::Processors::Vector::Info.new(in_path)
-              options[:name] = vector_info.name
-              options[:bounds] = vector_info.bounds
-            end
+          # Assigns new values from the vector info command to the creation options hash.
+          # @param in_path [String] file input path
+          # @param options [Hash] creation options
+          def assign_rendering_options(in_path, options)
+            vector_info = GeoWorks::Derivatives::Processors::Vector::Info.new(in_path)
+            options[:name] = vector_info.name
+            options[:bounds] = vector_info.bounds
+          end
         end
       end
     end
