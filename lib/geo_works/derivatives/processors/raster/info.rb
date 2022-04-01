@@ -90,11 +90,12 @@ module GeoWorks
           def raster_bounds
             ul = /(?<=Upper Left\s).*?(?=\n)/.match(doc)
             lr = /(?<=Lower Right\s).*?(?=\n)/.match(doc)
-            return '' unless ul && lr
             w, n = extract_coordinates(ul[0])
             e, s = extract_coordinates(lr[0])
 
             { north: n, east: e, south: s, west: w }
+          rescue StandardError
+            ''
           end
 
           # Given an output string from the gdalinfo command, returns

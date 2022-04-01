@@ -49,31 +49,42 @@ RSpec.describe GeoWorks::Derivatives::Processors::Raster::Info do
                                        west: 74.432166)
       end
     end
-  end
 
-  context 'when gdalinfo does not return data' do
-    let(:info_doc) { read_test_data_fixture('files/gdalinfo-blank.txt') }
+    context 'when gdalinfo does not return data' do
+      let(:info_doc) { read_test_data_fixture('files/gdalinfo-blank.txt') }
 
-    describe '#driver' do
-      it 'returns an empty string' do
-        expect(processor.driver).to eq('')
+      describe '#driver' do
+        it 'returns an empty string' do
+          expect(processor.driver).to eq('')
+        end
+      end
+
+      describe '#min_max' do
+        it 'returns an empty string' do
+          expect(processor.min_max).to eq('')
+        end
+      end
+
+      describe '#size' do
+        it 'returns an empty string' do
+          expect(processor.size).to eq('')
+        end
+      end
+
+      describe '#bounds' do
+        it 'returns an empty string' do
+          expect(processor.bounds).to eq('')
+        end
       end
     end
 
-    describe '#min_max' do
-      it 'returns an empty string' do
-        expect(processor.min_max).to eq('')
-      end
-    end
+    context 'when processor is run against a non-geo tiff' do
+      let(:info_doc) { read_test_data_fixture('files/gdalinfo-no-geo-tiff.txt') }
 
-    describe '#size' do
-      it 'returns an empty string' do
-        expect(processor.size).to eq('')
-      end
-    end
-    describe '#bounds' do
-      it 'returns an empty string' do
-        expect(processor.bounds).to eq('')
+      describe '#bounds' do
+        it 'returns an empty string' do
+          expect(processor.bounds).to eq('')
+        end
       end
     end
   end
