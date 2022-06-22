@@ -1,33 +1,49 @@
----
-version: 2
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.2.5
+  node: circleci/node@5.0.2
 jobs:
   build:
     working_directory: ~/geo_works
     docker:
-      - image: circleci/ruby:2.7.5-node-browsers
+      - image: cimg/ruby:2.7.5-browsers
     steps:
       - checkout
       - run: sudo apt update -y
       - run: sudo apt-get install gdal-bin libgdal-dev libcairo2-dev libpango1.0-dev python3-pip python-is-python3
       - run: sudo sh bin/ci_simple_tiles_install.sh
-      # Install Bundler
+      - node/install:
+          install-yarn: false
+          node-version: '12.16.1'
+      - run:
+          name: Check current version of node
+          command: node -v
+      # Restore Cached Dependencies
       - run: gem install bundler -v '2.2.14'
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
+      - run:
+          name: Install mapnik
+          command: npm install mapnik
       - persist_to_workspace:
           root: '~/geo_works'
           paths: '*'
   test:
     working_directory: ~/geo_works
     docker:
-      - image: circleci/ruby:2.7.5-node-browsers
+      - image: cimg/ruby:2.7.5-browsers
     steps:
       - attach_workspace:
           at: '~/geo_works'
       - run: sudo apt update -y
       - run: sudo apt-get install gdal-bin libgdal-dev libcairo2-dev libpango1.0-dev python3-pip python-is-python3
       - run: sudo sh bin/ci_simple_tiles_install.sh
-      # Install Bundler
+      - node/install:
+          install-yarn: false
+          node-version: '12.16.1'
+      - run:
+          name: Check current version of node
+          command: node -v
       - run: gem install bundler -v '2.2.14'
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
@@ -35,11 +51,10 @@ jobs:
   rubocop:
     working_directory: ~/geo_works
     docker:
-      - image: circleci/ruby:2.7.5-node-browsers
+      - image: cimg/ruby:2.7.5-browsers
     steps:
       - attach_workspace:
           at: '~/geo_works'
-      # Install Bundler
       - run: gem install bundler -v '2.2.14'
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
