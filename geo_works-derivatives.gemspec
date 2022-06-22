@@ -32,7 +32,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'hydra-derivatives'
   spec.add_dependency 'mime-types'
-  spec.add_dependency 'simpler-tiles'
 
   spec.add_development_dependency 'bixby'
   spec.add_development_dependency 'bundler'
