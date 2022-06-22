@@ -11,34 +11,20 @@ Hydra::Derivatives compatible processors for Geospatial derivative generation.
     * You can install it on Mac OSX with `brew install gdal`.
     * On Ubuntu, use `sudo apt-get install gdal-bin`.
 
-## Simple Tiles
-
-GeoWorks requires the image generation library [Simple Tiles](http://propublica.github.io/simple-tiles/).
-
-Mac OS X:
-
-- Install via Homebrew: ```brew install simple-tiles```
-
-Linux:
-
-- Install dependencies:
-
-  ```
-  libgdal-dev
-  libcairo2-dev
-  libpango1.0-dev
-  ```
-
-- Compile:
-
-  ```
-  $ git clone git@github.com:propublica/simple-tiles.git
-  $ cd simple-tiles
-  $ ./configure
-  $ make && make install
-  ```
-
 ## Installation
+
+Add the `node-mapnik` package:
+
+```
+$ npm install mapnik
+```
+
+or
+
+```
+$ yarn add mapnik
+```
+
 
 Add this line to your application's Gemfile:
 

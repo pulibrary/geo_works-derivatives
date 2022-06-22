@@ -8,5 +8,9 @@ module GeoWorks
     require 'geo_works/derivatives/config'
     require 'geo_works/derivatives/processors'
     require 'geo_works/derivatives/runners'
+
+    def self.root
+      File.expand_path("../..", File.dirname(__FILE__))
+    end
   end
 end
