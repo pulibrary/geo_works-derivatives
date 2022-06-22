@@ -10,8 +10,7 @@ jobs:
     steps:
       - checkout
       - run: sudo apt update -y
-      - run: sudo apt-get install gdal-bin libgdal-dev libcairo2-dev libpango1.0-dev python3-pip python-is-python3
-      - run: sudo sh bin/ci_simple_tiles_install.sh
+      - run: sudo apt-get install gdal-bin libgdal-dev
       - node/install:
           install-yarn: false
           node-version: '12.16.1'
@@ -36,8 +35,7 @@ jobs:
       - attach_workspace:
           at: '~/geo_works'
       - run: sudo apt update -y
-      - run: sudo apt-get install gdal-bin libgdal-dev libcairo2-dev libpango1.0-dev python3-pip python-is-python3
-      - run: sudo sh bin/ci_simple_tiles_install.sh
+      - run: sudo apt-get install gdal-bin libgdal-dev
       - node/install:
           install-yarn: false
           node-version: '12.16.1'
