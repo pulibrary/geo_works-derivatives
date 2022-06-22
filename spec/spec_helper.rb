@@ -2,19 +2,18 @@
 ENV['RACK_ENV'] = 'test'
 ENV['RAILS_ENV'] = 'test'
 require 'simplecov'
-require 'coveralls'
 require 'fileutils'
 require 'pry-byebug'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   [
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
+    SimpleCov::Formatter::HTMLFormatter
   ]
 )
 SimpleCov.start do
   add_filter 'spec'
   add_filter 'lib/geo_works/derivatives/config'
+  minimum_coverage 100
 end
 
 require "bundler/setup"
